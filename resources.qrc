@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/plugins/txt_2_tif_dem_builder" >
+        <file>icon.png</file>
+    </qresource>
+</RCC>
