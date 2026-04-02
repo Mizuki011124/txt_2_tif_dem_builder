@@ -1,0 +1,2 @@
+# txt_2_tif_dem_builder
+G空間情報センター等でダウンロードできるtxt形式のDEMをgeotiff形式に変換するQGISプラグインです。
