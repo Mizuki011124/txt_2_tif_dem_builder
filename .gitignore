@@ -4,7 +4,7 @@ __pycache__/
 *.pyo
 *.pyd
 
-# QGIS関連（必要に応じて）
+# QGIS関連
 *.log
 
 # OS系
