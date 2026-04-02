@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# QGIS関連（必要に応じて）
+*.log
+
+# OS系
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# 一時ファイル
+*.tmp
+*.bak
