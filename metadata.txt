@@ -12,8 +12,8 @@ email=takigawa.mizuki011124@gmail.com
 
 about=このプラグインは、G空間情報センターなどからダウンロードできる DEM の txt ファイルを、GeoTIFF 形式に変換するためのツールです。 複数の txt ファイルを 1 つのフォルダにまとめて入力することで、それらを自動的に結合した DEM（マージ済み GeoTIFF）を出力することもできます。 なお、txt に含まれる各点の座標は、出力される GeoTIFF のラスタセルの中心に対応するように設定されています。
 
-tracker=http://bugs
-repository=http://repo
+tracker=https://github.com/Mizuki011124/txt_2_tif_dem_builder/issues
+repository=https://github.com/Mizuki011124/txt_2_tif_dem_builder
 # End of mandatory metadata
 
 # Recommended items:
@@ -23,9 +23,9 @@ hasProcessingProvider=no
 # changelog=
 
 # Tags are comma separated with spaces allowed
-tags=python
+tags=dem, csv, txt, geotiff, tif, G空間情報センター, 標高
 
-homepage=http://homepage
+homepage=https://github.com/Mizuki011124/txt_2_tif_dem_builder
 category=Plugins
 icon=icon.png
 # experimental flag
