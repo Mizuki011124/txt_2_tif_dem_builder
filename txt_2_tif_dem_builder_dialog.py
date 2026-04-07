@@ -72,9 +72,9 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
         self.fileWidgetInput.setStorageMode(QgsFileWidget.GetFile)
         self.fileWidgetInput.setFilePath('')
 
-        self.spinXcol.setValue(2)
-        self.spinYcol.setValue(3)
-        self.spinZcol.setValue(4)
+        self.spinXcol.setValue(1)
+        self.spinYcol.setValue(2)
+        self.spinZcol.setValue(3)
 
         self.comboDelimiter.setCurrentIndex(0)
         self.lineEditCustomDelimiter.clear()
@@ -148,12 +148,12 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
     # ------------------------------
     def _get_delimiter(self):
         text = self.comboDelimiter.currentText()
+        if text == 'スペース':
+            return None
         if text == 'カンマ (,)':
             return ','
         if text == 'タブ (\\t)':
             return '\t'
-        if text == 'スペース':
-            return None
         if text == 'セミコロン (;)':
             return ';'
         if text == 'その他':
@@ -278,6 +278,7 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
         self.progressBar.setValue(100)
         return [params['single_output']]
 
+
     def _run_folder(self, params):
         patterns = ['*.txt', '*.csv']
         input_files = []
@@ -289,124 +290,167 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
             raise ValueError('入力フォルダ内に txt / csv ファイルが見つかりません。')
 
         generated_tifs = []
+        added_paths = []
         total_steps = len(input_files) + (1 if params['output_merged'] else 0)
         current_step = 0
 
         temp_output_folder = params['output_folder']
-        if not params['output_individual']:
+        cleanup_temp_outputs = not params['output_individual']
+        if cleanup_temp_outputs:
             temp_output_folder = os.path.join(params['input_path'], '_tmp_txt2tif_outputs')
+
         os.makedirs(temp_output_folder, exist_ok=True)
 
-        for txt_path in input_files:
-            if self._cancel_requested:
-                break
-            name = os.path.splitext(os.path.basename(txt_path))[0]
-            out_tif = os.path.join(temp_output_folder, name + '.tif')
-            self._txt_to_tif(
-                txt_path=txt_path,
-                out_tif=out_tif,
-                x_col=params['x_col'],
-                y_col=params['y_col'],
-                z_col=params['z_col'],
-                epsg=params['epsg'],
-                delimiter=params['delimiter'],
-                skiprows=params['skiprows'],
-                nodata=params['nodata'],
-            )
-            generated_tifs.append(out_tif)
-            current_step += 1
-            self._set_progress_by_steps(current_step, total_steps)
+        try:
+            for txt_path in input_files:
+                if self._cancel_requested:
+                    break
 
-        if self._cancel_requested:
-            return []
+                name = os.path.splitext(os.path.basename(txt_path))[0]
+                out_tif = os.path.join(temp_output_folder, name + '.tif')
 
-        added_paths = []
-        if params['output_individual']:
-            added_paths.extend(generated_tifs)
-
-        if params['output_merged']:
-            self._merge_tifs(generated_tifs, params['merged_output'], nodata=params['nodata'])
-            current_step += 1
-            self._set_progress_by_steps(current_step, total_steps)
-            added_paths.append(params['merged_output'])
-
-        if not params['output_individual']:
-            for tif_path in generated_tifs:
                 try:
-                    os.remove(tif_path)
+                    self._txt_to_tif(
+                        txt_path=txt_path,
+                        out_tif=out_tif,
+                        x_col=params['x_col'],
+                        y_col=params['y_col'],
+                        z_col=params['z_col'],
+                        epsg=params['epsg'],
+                        delimiter=params['delimiter'],
+                        skiprows=params['skiprows'],
+                        nodata=params['nodata'],
+                    )
+                except ValueError as e:
+                    if '空のファイル' in str(e):
+                        reply = QMessageBox.question(
+                            self,
+                            '空ファイルの確認',
+                            f'{os.path.basename(txt_path)} は空のファイルです。\n\n'
+                            'このファイルをスキップして処理を続行しますか？',
+                            QMessageBox.Yes | QMessageBox.No,
+                            QMessageBox.No,
+                        )
+                        if reply == QMessageBox.Yes:
+                            self._log(
+                                '空ファイルをスキップしました: {}'.format(os.path.basename(txt_path)),
+                                Qgis.Warning,
+                            )
+                            current_step += 1
+                            self._set_progress_by_steps(current_step, total_steps)
+                            continue
+                        raise ValueError('空のファイルが含まれているため、処理を中止しました。')
+                    raise
+
+                generated_tifs.append(out_tif)
+                current_step += 1
+                self._set_progress_by_steps(current_step, total_steps)
+
+            if self._cancel_requested:
+                return []
+
+            if params['output_individual']:
+                added_paths.extend(generated_tifs)
+
+            if params['output_merged']:
+                self._merge_tifs(generated_tifs, params['merged_output'], nodata=params['nodata'])
+                current_step += 1
+                self._set_progress_by_steps(current_step, total_steps)
+                added_paths.append(params['merged_output'])
+
+            return added_paths
+
+        finally:
+            if cleanup_temp_outputs:
+                for tif_path in generated_tifs:
+                    try:
+                        if os.path.exists(tif_path):
+                            os.remove(tif_path)
+                    except OSError:
+                        pass
+                try:
+                    if os.path.isdir(temp_output_folder) and not os.listdir(temp_output_folder):
+                        os.rmdir(temp_output_folder)
                 except OSError:
                     pass
-            try:
-                os.rmdir(temp_output_folder)
-            except OSError:
-                pass
-
-        return added_paths
 
     # ------------------------------
     # 変換本体
     # ------------------------------
+
     def _txt_to_tif(self, txt_path, out_tif, x_col, y_col, z_col, epsg=4326,
                     nodata=-9999.0, delimiter=',', skiprows=0):
-        data = np.loadtxt(txt_path, delimiter=delimiter, skiprows=skiprows)
-        if data.ndim == 1:
-            data = np.expand_dims(data, axis=0)
+        try:
+            data = np.loadtxt(txt_path, delimiter=delimiter, skiprows=skiprows)
+            if data.ndim == 1:
+                data = np.expand_dims(data, axis=0)
 
-        max_col = max(x_col, y_col, z_col)
-        if data.shape[1] < max_col:
-            raise ValueError(
-                f'{os.path.basename(txt_path)} の列数が不足しています。'
-                f' 指定列: X={x_col}, Y={y_col}, Z={z_col}, 実際の列数: {data.shape[1]}'
+            if data.size == 0:
+                raise ValueError(f'{os.path.basename(txt_path)} は空のファイルです。')
+
+            max_col = max(x_col, y_col, z_col)
+            if data.shape[1] < max_col:
+                raise ValueError(
+                    f'{os.path.basename(txt_path)} の列数が不足しています。'
+                    f' 指定列: X={x_col}, Y={y_col}, Z={z_col}, 実際の列数: {data.shape[1]}'
+                )
+
+            x = data[:, x_col - 1]
+            y = data[:, y_col - 1]
+            z = data[:, z_col - 1]
+
+            xs = np.unique(x)
+            ys = np.unique(y)
+            xs.sort()
+            ys.sort()
+
+            nx = xs.size
+            ny = ys.size
+            x_res = xs[1] - xs[0] if nx > 1 else 0.5
+            y_res = ys[1] - ys[0] if ny > 1 else 0.5
+
+            grid = np.full((ny, nx), nodata, dtype=np.float32)
+            ix = np.searchsorted(xs, x)
+            iy = np.searchsorted(ys, y)
+            rows = ny - 1 - iy
+            cols = ix
+            grid[rows, cols] = z
+
+            x_min = xs.min()
+            y_max = ys.max()
+            geotransform = (
+                x_min - x_res / 2.0,
+                x_res,
+                0.0,
+                y_max + y_res / 2.0,
+                0.0,
+                -y_res,
             )
 
-        x = data[:, x_col - 1]
-        y = data[:, y_col - 1]
-        z = data[:, z_col - 1]
+            os.makedirs(os.path.dirname(out_tif), exist_ok=True) if os.path.dirname(out_tif) else None
+            driver = gdal.GetDriverByName('GTiff')
+            ds = driver.Create(out_tif, nx, ny, 1, gdal.GDT_Float32)
+            ds.SetGeoTransform(geotransform)
 
-        xs = np.unique(x)
-        ys = np.unique(y)
-        xs.sort()
-        ys.sort()
+            srs = osr.SpatialReference()
+            srs.ImportFromEPSG(epsg)
+            ds.SetProjection(srs.ExportToWkt())
 
-        nx = xs.size
-        ny = ys.size
-        x_res = xs[1] - xs[0] if nx > 1 else 0.5
-        y_res = ys[1] - ys[0] if ny > 1 else 0.5
+            band = ds.GetRasterBand(1)
+            band.WriteArray(grid)
+            band.SetNoDataValue(nodata)
+            band.FlushCache()
+            ds = None
+            self._log('作成: {}'.format(out_tif), Qgis.Info)
+            QApplication.processEvents()
 
-        grid = np.full((ny, nx), nodata, dtype=np.float32)
-        ix = np.searchsorted(xs, x)
-        iy = np.searchsorted(ys, y)
-        rows = ny - 1 - iy
-        cols = ix
-        grid[rows, cols] = z
-
-        x_min = xs.min()
-        y_max = ys.max()
-        geotransform = (
-            x_min - x_res / 2.0,
-            x_res,
-            0.0,
-            y_max + y_res / 2.0,
-            0.0,
-            -y_res,
-        )
-
-        os.makedirs(os.path.dirname(out_tif), exist_ok=True) if os.path.dirname(out_tif) else None
-        driver = gdal.GetDriverByName('GTiff')
-        ds = driver.Create(out_tif, nx, ny, 1, gdal.GDT_Float32)
-        ds.SetGeoTransform(geotransform)
-
-        srs = osr.SpatialReference()
-        srs.ImportFromEPSG(epsg)
-        ds.SetProjection(srs.ExportToWkt())
-
-        band = ds.GetRasterBand(1)
-        band.WriteArray(grid)
-        band.SetNoDataValue(nodata)
-        band.FlushCache()
-        ds = None
-        self._log('作成: {}'.format(out_tif), Qgis.Info)
-        QApplication.processEvents()
+        except Exception:
+            try:
+                if os.path.exists(out_tif):
+                    os.remove(out_tif)
+            except OSError:
+                pass
+            raise
 
     def _merge_tifs(self, tif_list, out_tif_path, nodata=-9999.0):
         if not tif_list:

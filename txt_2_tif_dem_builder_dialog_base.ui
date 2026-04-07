@@ -171,17 +171,17 @@
              <widget class="QComboBox" name="comboDelimiter">
               <item>
                <property name="text">
+                <string>スペース</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
                 <string>カンマ (,)</string>
                </property>
               </item>
               <item>
                <property name="text">
                 <string>タブ (\t)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>スペース</string>
                </property>
               </item>
               <item>
@@ -429,7 +429,8 @@ p, li { white-space: pre-wrap; }
 &lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;txt/csv を GeoTIFFに変換&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;フォルダ内の複数ファイルを個別に出力&lt;/li&gt;
 &lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;複数の tif をマージして出力&lt;/li&gt;&lt;/ul&gt;
-&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;入力点の座標は、出力ラスタセルの中心に対応するように処理します。&lt;/p&gt;
+&lt;p style=" margin-top:12px; margin-bottom:6px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;入力点の座標は、出力ラスタセルの中心に対応するように処理します。&lt;/p&gt;
+&lt;p style=" margin-top:6px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;nodata値は-9999が割り当てられます。&lt;/p&gt;
 &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;区切り文字やスキップ行数は、入力ファイル形式に合わせて設定してください。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="openExternalLinks">
