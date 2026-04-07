@@ -415,27 +415,29 @@
       <layout class="QVBoxLayout" name="verticalLayoutRight">
        <item>
         <widget class="QTextBrowser" name="textBrowserHelp">
-         <property name="html">
-          <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS UI Gothic'; font-size:9.216pt; font-weight:400; font-style:normal;"&gt;
-&lt;h3 style=" margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-size:large; font-weight:600;"&gt;txt/csv から DEM を作成&lt;/span&gt;&lt;/h3&gt;
-&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;このツールは、x, y, z座標列を指定してGeoTIFFを作成します。&lt;/p&gt;
-&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;入力方法&lt;/span&gt;&lt;/p&gt;
-&lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;単一ファイル入力&lt;/li&gt;
-&lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;フォルダ入力&lt;/li&gt;&lt;/ul&gt;
-&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;主な機能&lt;/span&gt;&lt;/p&gt;
-&lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;txt/csv を GeoTIFFに変換&lt;/li&gt;
-&lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;フォルダ内の複数ファイルを個別に出力&lt;/li&gt;
-&lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;複数の tif をマージして出力&lt;/li&gt;&lt;/ul&gt;
-&lt;p style=" margin-top:12px; margin-bottom:6px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;入力点の座標は、出力ラスタセルの中心に対応するように処理します。&lt;/p&gt;
-&lt;p style=" margin-top:6px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;nodata値は-9999が割り当てられます。&lt;/p&gt;
-&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;区切り文字やスキップ行数は、入力ファイル形式に合わせて設定してください。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="openExternalLinks">
-          <bool>true</bool>
-         </property>
+          <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+              &lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
+              p, li { white-space: pre-wrap; }
+              &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS UI Gothic'; font-size:9.216pt; font-weight:400; font-style:normal;"&gt;
+              &lt;h3 style=" margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-size:large; font-weight:600;"&gt;txt/csv から GeoTIFF を作成&lt;/span&gt;&lt;/h3&gt;
+              &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;このツールは、x, y, z座標列を指定してGeoTIFFを作成します。&lt;/p&gt;
+              &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;入力方法&lt;/span&gt;&lt;/p&gt;
+              &lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;単一ファイル入力&lt;/li&gt;
+              &lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;フォルダ入力&lt;/li&gt;&lt;/ul&gt;
+              &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;主な機能&lt;/span&gt;&lt;/p&gt;
+              &lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;txt/csv を GeoTIFFに変換&lt;/li&gt;
+              &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;フォルダ内の複数ファイルを個別に出力&lt;/li&gt;
+              &lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;複数の tif をマージして出力&lt;/li&gt;&lt;/ul&gt;
+              &lt;p style=" margin-top:12px; margin-bottom:6px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;入力点の座標は、出力ラスタセルの中心に対応するように処理します。&lt;/p&gt;
+              &lt;p style=" margin-top:6px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;nodata値は-9999が割り当てられます。&lt;/p&gt;
+              &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;区切り文字やスキップ行数は、入力ファイル形式に合わせて設定してください。&lt;/p&gt;
+              &lt;p style=" margin-top:24px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;GitHub: &lt;a href="https://github.com/Mizuki011124/txt_2_tif_dem_builder"&gt;https://github.com/Mizuki011124/txt_2_tif_dem_builder&lt;/a&gt;&lt;/p&gt;
+              &lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="openExternalLinks">
+            <bool>true</bool>
+          </property>
         </widget>
        </item>
       </layout>
