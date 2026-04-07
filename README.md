@@ -8,7 +8,7 @@ G空間情報センター等でダウンロードできるtxt/csv形式のDEMを
 
 1. プラグインをインストールすると、以下のアイコンがツールバーに表示されます。クリックするとツールが起動します。
 
-<img src="./icon.png" alt="icon" width="80">
+<img src="./icon.png" alt="icon" width="100">
 
 2. 以下のパラメータを設定します。
 
@@ -31,7 +31,7 @@ G空間情報センター等でダウンロードできるtxt/csv形式のDEMを
 
 3. 「実行」をクリック
 
-<img src="./docs/UI.png" alt="UI" width="500">
+<img src="./docs/UI.png" alt="UI" width="800">
 
 ## 留意事項
 
