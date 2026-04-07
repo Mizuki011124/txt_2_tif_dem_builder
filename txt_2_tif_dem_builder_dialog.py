@@ -85,8 +85,8 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
             self.crsSelector.setCrs(default_crs)
 
         self.fileWidgetSingleOutput.setFilePath('')
-        self.checkOutputIndividual.setChecked(True)
-        self.checkOutputMerged.setChecked(False)
+        self.checkOutputIndividual.setChecked(False)
+        self.checkOutputMerged.setChecked(True)
         self.fileWidgetOutputFolder.setFilePath('')
         self.fileWidgetMergedOutput.setFilePath('')
 
