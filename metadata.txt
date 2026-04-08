@@ -6,12 +6,14 @@
 [general]
 name=txt2tif DEM builder
 qgisMinimumVersion=3.0
-description=G空間情報センター等でダウンロードできるtxt/csv形式のDEMをgeotiff形式に変換するプラグインです。/ This plugin converts DEM data in txt/csv format (e.g., from the Geospatial Information Center) to GeoTIFF.
+description=G空間情報センター等でダウンロードできるtxt/csv形式のDEMをgeotiff形式に変換するプラグインです。
+  This plugin converts DEM data in txt/csv format (e.g., from the Geospatial Information Center) to GeoTIFF.
 version=1.0.0
 author=Mizuki TAKIGAWA
 email=takigawa.mizuki011124@gmail.com
 
-about=このプラグインは、G空間情報センターなどからダウンロードできる DEM の txt/csv ファイルを、GeoTIFF 形式に変換するためのツールです。 複数の txt/csv ファイルを 1 つのフォルダにまとめて入力することで、それらを自動的に結合した DEM（マージ済み GeoTIFF）を出力することもできます。 なお、txt に含まれる各点の座標は、出力される GeoTIFF のラスタセルの中心に対応するように設定されています。 / This plugin converts DEM data in txt/csv format (e.g., downloaded from the Geospatial Information Center) into GeoTIFF. Multiple txt/csv files in a folder can be processed together and merged into a single DEM (merged GeoTIFF). The coordinates of each input point are mapped to the center of the output raster cells.
+about=このプラグインは、G空間情報センターなどからダウンロードできる DEM の txt/csv ファイルを、GeoTIFF 形式に変換するためのツールです。 複数の txt/csv ファイルを 1 つのフォルダにまとめて入力することで、それらを自動的に結合した DEM（マージ済み GeoTIFF）を出力することもできます。 なお、txt に含まれる各点の座標は、出力される GeoTIFF のラスタセルの中心に対応するように設定されています。
+  This plugin converts DEM data in txt/csv format (e.g., downloaded from the Geospatial Information Center) into GeoTIFF. Multiple txt/csv files in a folder can be processed together and merged into a single DEM (merged GeoTIFF). The coordinates of each input point are mapped to the center of the output raster cells.
 
 tracker=https://github.com/Mizuki011124/txt_2_tif_dem_builder/issues
 repository=https://github.com/Mizuki011124/txt_2_tif_dem_builder
