@@ -3,7 +3,7 @@
 G空間情報センター等でダウンロードできるtxt/csv形式のDEMを、GeoTIFF形式に変換するQGISプラグインです。  
 This plugin converts DEM data in txt/csv format (e.g., from the Geospatial Information Center) to GeoTIFF.
 
-![](./docs/demo.gif)
+![](./docs/demo_en.gif)
 
 ## 使い方 / Usage
 
@@ -46,7 +46,7 @@ This plugin converts DEM data in txt/csv format (e.g., from the Geospatial Infor
 3. 「実行」をクリック  
    Click "Run"
 
-<img src="./docs/UI.png" alt="UI" width="800">
+<img src="./docs/UI_en.png" alt="UI" width="800">
 
 ## 留意事項 / Notes
 
