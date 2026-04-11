@@ -17,8 +17,9 @@ class TXT2TIF:
         self.iface = iface
         self.plugin_dir = os.path.dirname(__file__)
 
-        locale = QSettings().value('locale/userLocale')[0:2]
-        locale_path = os.path.join(self.plugin_dir, 'i18n', 'TXT2TIF_{}.qm'.format(locale))
+        locale_value = QSettings().value('locale/userLocale', 'en')
+        locale = locale_value[0:2] if locale_value else 'en'
+        locale_path = os.path.join(self.plugin_dir, 'i18n', f'TXT2TIF_{locale}.qm')
         if os.path.exists(locale_path):
             self.translator = QTranslator()
             self.translator.load(locale_path)

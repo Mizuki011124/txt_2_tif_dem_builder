@@ -11,6 +11,7 @@ import numpy as np
 from osgeo import gdal, osr
 
 from qgis.PyQt import QtWidgets, uic
+from qgis.PyQt.QtCore import QCoreApplication
 from qgis.PyQt.QtWidgets import QApplication, QMessageBox
 from qgis.core import (
     Qgis,
@@ -38,13 +39,16 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
         self._connect_signals()
         self.reset_form()
 
+    def tr(self, message):
+        return QCoreApplication.translate('TXT2TIFDialog', message)
+
     # ------------------------------
-    # UI 初期化
+    # UI initialization
     # ------------------------------
     def _setup_widgets(self):
-        self.fileWidgetInput.setFilter('Text/CSV (*.txt *.csv);;All files (*.*)')
-        self.fileWidgetSingleOutput.setFilter('GeoTIFF (*.tif *.tiff)')
-        self.fileWidgetMergedOutput.setFilter('GeoTIFF (*.tif *.tiff)')
+        self.fileWidgetInput.setFilter(self.tr('Text/CSV (*.txt *.csv);;All files (*.*)'))
+        self.fileWidgetSingleOutput.setFilter(self.tr('GeoTIFF (*.tif *.tiff)'))
+        self.fileWidgetMergedOutput.setFilter(self.tr('GeoTIFF (*.tif *.tiff)'))
 
         self.fileWidgetInput.setStorageMode(QgsFileWidget.GetFile)
         self.fileWidgetSingleOutput.setStorageMode(QgsFileWidget.SaveFile)
@@ -54,6 +58,16 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(100)
         self.progressBar.setFormat('%p%')
+
+        self._setup_delimiter_combo()
+
+    def _setup_delimiter_combo(self):
+        self.comboDelimiter.clear()
+        self.comboDelimiter.addItem(self.tr('Space'), None)
+        self.comboDelimiter.addItem(self.tr('Comma (,)'), ',')
+        self.comboDelimiter.addItem(self.tr('Tab (\\t)'), '\t')
+        self.comboDelimiter.addItem(self.tr('Semicolon (;)'), ';')
+        self.comboDelimiter.addItem(self.tr('Other'), 'custom')
 
     def _connect_signals(self):
         self.radioInputFile.toggled.connect(self._update_input_mode_ui)
@@ -104,7 +118,7 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
 
         if is_file:
             self.fileWidgetInput.setStorageMode(QgsFileWidget.GetFile)
-            self.fileWidgetInput.setFilter('Text/CSV (*.txt *.csv);;All files (*.*)')
+            self.fileWidgetInput.setFilter(self.tr('Text/CSV (*.txt *.csv);;All files (*.*)'))
         else:
             self.fileWidgetInput.setStorageMode(QgsFileWidget.GetDirectory)
 
@@ -132,7 +146,7 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
         self.fileWidgetMergedOutput.setEnabled(enable_merged)
 
     def _update_delimiter_ui(self):
-        self.lineEditCustomDelimiter.setEnabled(self.comboDelimiter.currentText() == 'その他')
+        self.lineEditCustomDelimiter.setEnabled(self.comboDelimiter.currentData() == 'custom')
 
     def _set_running_state(self, running):
         self._is_running = running
@@ -141,24 +155,16 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
         self.groupBoxCRS.setEnabled(not running)
         self.groupBoxOutput.setEnabled(not running)
         self.pushButtonRun.setEnabled(not running)
-        self.pushButtonCancel.setText('中止' if running else 'キャンセル')
+        self.pushButtonCancel.setText(self.tr('Stop') if running else self.tr('Cancel'))
 
     # ------------------------------
-    # 値取得・検証
+    # Get / validate values
     # ------------------------------
     def _get_delimiter(self):
-        text = self.comboDelimiter.currentText()
-        if text == 'スペース':
-            return None
-        if text == 'カンマ (,)':
-            return ','
-        if text == 'タブ (\\t)':
-            return '\t'
-        if text == 'セミコロン (;)':
-            return ';'
-        if text == 'その他':
+        value = self.comboDelimiter.currentData()
+        if value == 'custom':
             return self.lineEditCustomDelimiter.text()
-        return ','
+        return value
 
     def _get_params(self):
         crs = self.crsSelector.crs()
@@ -189,32 +195,34 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
 
     def _validate_params(self, params):
         if not params['input_path']:
-            raise ValueError('入力パスを指定してください。')
+            raise ValueError(self.tr('Please specify an input path.'))
         if params['delimiter'] == '':
-            raise ValueError('その他区切りを選んだ場合は、区切り文字を入力してください。')
+            raise ValueError(self.tr('When "Other" is selected, please enter a delimiter character.'))
         if len({params['x_col'], params['y_col'], params['z_col']}) < 3:
-            raise ValueError('X列・Y列・Z列には異なる列番号を指定してください。')
+            raise ValueError(self.tr('Please specify different column numbers for X, Y, and Z.'))
 
         if params['input_mode'] == 'file':
             if not os.path.isfile(params['input_path']):
-                raise ValueError('指定された入力ファイルが見つかりません。')
+                raise ValueError(self.tr('The specified input file was not found.'))
             if not params['single_output']:
-                raise ValueError('出力ファイル名を指定してください。')
+                raise ValueError(self.tr('Please specify an output file name.'))
             params['single_output'] = self._ensure_tif_extension(params['single_output'])
         else:
             if not os.path.isdir(params['input_path']):
-                raise ValueError('指定された入力フォルダが見つかりません。')
+                raise ValueError(self.tr('The specified input folder was not found.'))
             if not params['output_individual'] and not params['output_merged']:
-                raise ValueError('フォルダ入力時は「個別tifを出力」または「マージtifを出力」を選択してください。')
+                raise ValueError(
+                    self.tr('For folder input, select either "Output individual TIFFs" or "Output merged TIFF".')
+                )
             if params['output_individual'] and not params['output_folder']:
-                raise ValueError('個別出力先フォルダを指定してください。')
+                raise ValueError(self.tr('Please specify an output folder for individual files.'))
             if params['output_merged']:
                 if not params['merged_output']:
-                    raise ValueError('マージ出力ファイル名を指定してください。')
+                    raise ValueError(self.tr('Please specify an output file name for the merged TIFF.'))
                 params['merged_output'] = self._ensure_tif_extension(params['merged_output'])
 
     # ------------------------------
-    # 実行
+    # Run
     # ------------------------------
     def on_run_clicked(self):
         if self._is_running:
@@ -223,7 +231,7 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
             params = self._get_params()
             self._validate_params(params)
         except Exception as e:
-            QMessageBox.warning(self, '入力エラー', str(e))
+            QMessageBox.warning(self, self.tr('Input Error'), str(e))
             return
 
         self._cancel_requested = False
@@ -238,8 +246,8 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
                 added_paths = self._run_folder(params)
 
             if self._cancel_requested:
-                self._log('処理を中止しました。', Qgis.Warning)
-                QMessageBox.information(self, '中止', '処理を中止しました。')
+                self._log(self.tr('Processing was canceled.'), Qgis.Warning)
+                QMessageBox.information(self, self.tr('Canceled'), self.tr('Processing was canceled.'))
                 return
 
             if params['add_to_qgis']:
@@ -247,13 +255,13 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
                     self._add_raster_to_project(tif_path)
 
             self.progressBar.setValue(100)
-            self._log('処理が完了しました。', Qgis.Success)
-            QMessageBox.information(self, '完了', '処理が完了しました。')
+            self._log(self.tr('Processing completed.'), Qgis.Success)
+            QMessageBox.information(self, self.tr('Completed'), self.tr('Processing completed.'))
             self.accept()
 
         except Exception as e:
             self._log(traceback.format_exc(), Qgis.Critical)
-            QMessageBox.critical(self, 'エラー', str(e))
+            QMessageBox.critical(self, self.tr('Error'), str(e))
         finally:
             self._set_running_state(False)
 
@@ -278,7 +286,6 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
         self.progressBar.setValue(100)
         return [params['single_output']]
 
-
     def _run_folder(self, params):
         patterns = ['*.txt', '*.csv']
         input_files = []
@@ -287,7 +294,7 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
         input_files = sorted(set(input_files))
 
         if not input_files:
-            raise ValueError('入力フォルダ内に txt / csv ファイルが見つかりません。')
+            raise ValueError(self.tr('No txt/csv files were found in the input folder.'))
 
         generated_tifs = []
         added_paths = []
@@ -322,24 +329,27 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
                         nodata=params['nodata'],
                     )
                 except ValueError as e:
-                    if '空のファイル' in str(e):
+                    if 'is an empty file' in str(e):
                         reply = QMessageBox.question(
                             self,
-                            '空ファイルの確認',
-                            f'{os.path.basename(txt_path)} は空のファイルです。\n\n'
-                            'このファイルをスキップして処理を続行しますか？',
+                            self.tr('Empty File Detected'),
+                            self.tr('{filename} is an empty file.\n\nDo you want to skip this file and continue?').format(
+                                filename=os.path.basename(txt_path)
+                            ),
                             QMessageBox.Yes | QMessageBox.No,
                             QMessageBox.No,
                         )
                         if reply == QMessageBox.Yes:
                             self._log(
-                                '空ファイルをスキップしました: {}'.format(os.path.basename(txt_path)),
+                                self.tr('Skipped empty file: {filename}').format(
+                                    filename=os.path.basename(txt_path)
+                                ),
                                 Qgis.Warning,
                             )
                             current_step += 1
                             self._set_progress_by_steps(current_step, total_steps)
                             continue
-                        raise ValueError('空のファイルが含まれているため、処理を中止しました。')
+                        raise ValueError(self.tr('Processing was stopped because an empty file was included.'))
                     raise
 
                 generated_tifs.append(out_tif)
@@ -375,9 +385,8 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
                     pass
 
     # ------------------------------
-    # 変換本体
+    # Core conversion
     # ------------------------------
-
     def _txt_to_tif(self, txt_path, out_tif, x_col, y_col, z_col, epsg=4326,
                     nodata=-9999.0, delimiter=',', skiprows=0):
         try:
@@ -386,13 +395,20 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
                 data = np.expand_dims(data, axis=0)
 
             if data.size == 0:
-                raise ValueError(f'{os.path.basename(txt_path)} は空のファイルです。')
+                raise ValueError(
+                    self.tr('{filename} is an empty file.').format(filename=os.path.basename(txt_path))
+                )
 
             max_col = max(x_col, y_col, z_col)
             if data.shape[1] < max_col:
                 raise ValueError(
-                    f'{os.path.basename(txt_path)} の列数が不足しています。'
-                    f' 指定列: X={x_col}, Y={y_col}, Z={z_col}, 実際の列数: {data.shape[1]}'
+                    self.tr('{filename} does not have enough columns. Specified columns: X={x_col}, Y={y_col}, Z={z_col}. Actual number of columns: {actual_cols}').format(
+                        filename=os.path.basename(txt_path),
+                        x_col=x_col,
+                        y_col=y_col,
+                        z_col=z_col,
+                        actual_cols=data.shape[1],
+                    )
                 )
 
             x = data[:, x_col - 1]
@@ -441,7 +457,7 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
             band.SetNoDataValue(nodata)
             band.FlushCache()
             ds = None
-            self._log('作成: {}'.format(out_tif), Qgis.Info)
+            self._log(self.tr('Created: {path}').format(path=out_tif), Qgis.Info)
             QApplication.processEvents()
 
         except Exception:
@@ -454,12 +470,12 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
 
     def _merge_tifs(self, tif_list, out_tif_path, nodata=-9999.0):
         if not tif_list:
-            raise ValueError('マージ対象の tif がありません。')
+            raise ValueError(self.tr('There are no TIFF files to merge.'))
 
         vrt_path = os.path.splitext(out_tif_path)[0] + '.vrt'
         vrt = gdal.BuildVRT(vrt_path, tif_list, srcNodata=nodata, VRTNodata=nodata)
         if vrt is None:
-            raise RuntimeError('VRT の作成に失敗しました。')
+            raise RuntimeError(self.tr('Failed to create VRT.'))
 
         gdal.Translate(out_tif_path, vrt, format='GTiff', noData=nodata)
         vrt = None
@@ -467,11 +483,11 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
             os.remove(vrt_path)
         except OSError:
             pass
-        self._log('マージ完了: {}'.format(out_tif_path), Qgis.Info)
+        self._log(self.tr('Merge completed: {path}').format(path=out_tif_path), Qgis.Info)
         QApplication.processEvents()
 
     # ------------------------------
-    # 補助
+    # Helpers
     # ------------------------------
     def _set_progress_by_steps(self, current_step, total_steps):
         if total_steps <= 0:
@@ -487,9 +503,9 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
         raster = QgsRasterLayer(tif_path, layer_name)
         if raster.isValid():
             QgsProject.instance().addMapLayer(raster)
-            self._log('QGIS レイヤに追加: {}'.format(tif_path), Qgis.Info)
+            self._log(self.tr('Added to QGIS layer tree: {path}').format(path=tif_path), Qgis.Info)
         else:
-            self._log('レイヤ追加に失敗: {}'.format(tif_path), Qgis.Warning)
+            self._log(self.tr('Failed to add layer: {path}').format(path=tif_path), Qgis.Warning)
 
     def _log(self, message, level=Qgis.Info):
         QgsMessageLog.logMessage(message, 'txt2tif DEM builder', level)

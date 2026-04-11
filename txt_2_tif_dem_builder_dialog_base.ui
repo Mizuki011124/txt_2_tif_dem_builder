@@ -23,7 +23,7 @@
        <item>
         <widget class="QGroupBox" name="groupBoxInput">
          <property name="title">
-          <string>入力データ</string>
+          <string>Input</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayoutInputGroup">
           <item>
@@ -31,7 +31,7 @@
             <item>
              <widget class="QRadioButton" name="radioInputFile">
               <property name="text">
-               <string>単一ファイル</string>
+               <string>Single File</string>
               </property>
               <property name="checked">
                <bool>true</bool>
@@ -41,7 +41,7 @@
             <item>
              <widget class="QRadioButton" name="radioInputFolder">
               <property name="text">
-               <string>フォルダ</string>
+               <string>Folder</string>
               </property>
              </widget>
             </item>
@@ -65,7 +65,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="labelInputPath">
               <property name="text">
-               <string>入力パス</string>
+               <string>Input Path</string>
               </property>
              </widget>
             </item>
@@ -87,7 +87,7 @@
        <item>
         <widget class="QGroupBox" name="groupBoxColumns">
          <property name="title">
-          <string>列設定</string>
+          <string>Columns</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayoutColumnsGroup">
           <item>
@@ -95,7 +95,7 @@
             <item>
              <widget class="QLabel" name="labelX">
               <property name="text">
-               <string>X列</string>
+               <string>X column</string>
               </property>
              </widget>
             </item>
@@ -105,14 +105,14 @@
                <number>1</number>
               </property>
               <property name="value">
-               <number>2</number>
+               <number>1</number>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QLabel" name="labelY">
               <property name="text">
-               <string>Y列</string>
+               <string>Y column</string>
               </property>
              </widget>
             </item>
@@ -122,14 +122,14 @@
                <number>1</number>
               </property>
               <property name="value">
-               <number>3</number>
+               <number>2</number>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QLabel" name="labelZ">
               <property name="text">
-               <string>Z列</string>
+               <string>Z column</string>
               </property>
              </widget>
             </item>
@@ -139,7 +139,7 @@
                <number>1</number>
               </property>
               <property name="value">
-               <number>4</number>
+               <number>3</number>
               </property>
              </widget>
             </item>
@@ -163,43 +163,17 @@
             <item row="0" column="0">
              <widget class="QLabel" name="labelDelimiter">
               <property name="text">
-               <string>区切り文字</string>
+               <string>Delimiter</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QComboBox" name="comboDelimiter">
-              <item>
-               <property name="text">
-                <string>スペース</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>カンマ (,)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>タブ (\t)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>セミコロン (;)</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>その他</string>
-               </property>
-              </item>
-             </widget>
+             <widget class="QComboBox" name="comboDelimiter"/>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="labelCustomDelimiter">
               <property name="text">
-               <string>その他区切り</string>
+               <string>Custom Delimiter</string>
               </property>
              </widget>
             </item>
@@ -216,7 +190,7 @@
             <item row="2" column="0">
              <widget class="QLabel" name="labelSkip">
               <property name="text">
-               <string>スキップ行</string>
+               <string>Skip Rows</string>
               </property>
              </widget>
             </item>
@@ -238,13 +212,13 @@
        <item>
         <widget class="QGroupBox" name="groupBoxCRS">
          <property name="title">
-          <string>座標系</string>
+          <string>CRS</string>
          </property>
          <layout class="QFormLayout" name="formLayoutCRS">
           <item row="0" column="0">
            <widget class="QLabel" name="labelCRS">
             <property name="text">
-             <string>参照座標系</string>
+             <string>Coordinate Reference System</string>
             </property>
            </widget>
           </item>
@@ -264,13 +238,13 @@
        <item>
         <widget class="QGroupBox" name="groupBoxOutput">
          <property name="title">
-          <string>出力設定</string>
+          <string>Output</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayoutOutputGroup">
           <item>
            <widget class="QLabel" name="labelSingleOutputHeader">
             <property name="text">
-             <string>単一入力時の出力</string>
+             <string>Output for Single-File Input</string>
             </property>
            </widget>
           </item>
@@ -279,7 +253,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="labelSingleOutput">
               <property name="text">
-               <string>出力ファイル名</string>
+               <string>Output File</string>
               </property>
              </widget>
             </item>
@@ -298,7 +272,7 @@
           <item>
            <widget class="QLabel" name="labelFolderOutputHeader">
             <property name="text">
-             <string>フォルダ入力時の出力</string>
+             <string>Output for Folder Input</string>
             </property>
            </widget>
           </item>
@@ -307,14 +281,14 @@
             <item>
              <widget class="QCheckBox" name="checkOutputIndividual">
               <property name="text">
-               <string>個別tifを出力</string>
+               <string>Output Individual TIFFs</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QCheckBox" name="checkOutputMerged">
               <property name="text">
-               <string>マージtifを出力</string>
+               <string>Output Merged TIFF</string>
               </property>
              </widget>
             </item>
@@ -341,7 +315,7 @@
                <bool>false</bool>
               </property>
               <property name="text">
-               <string>個別出力先フォルダ</string>
+               <string>Folder for Individual Outputs</string>
               </property>
              </widget>
             </item>
@@ -364,7 +338,7 @@
                <bool>false</bool>
               </property>
               <property name="text">
-               <string>マージ出力ファイル名</string>
+               <string>Merged Output File</string>
               </property>
              </widget>
             </item>
@@ -386,7 +360,7 @@
           <item>
            <widget class="QCheckBox" name="checkAddToQgis">
             <property name="text">
-             <string>アルゴリズムの終了後に出力ファイルを開く</string>
+             <string>Open output file(s) after running algorithm</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -415,29 +389,29 @@
       <layout class="QVBoxLayout" name="verticalLayoutRight">
        <item>
         <widget class="QTextBrowser" name="textBrowserHelp">
-          <property name="html">
-            <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
-              &lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-              p, li { white-space: pre-wrap; }
-              &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS UI Gothic'; font-size:9.216pt; font-weight:400; font-style:normal;"&gt;
-              &lt;h3 style=" margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-size:large; font-weight:600;"&gt;txt/csv から GeoTIFF を作成&lt;/span&gt;&lt;/h3&gt;
-              &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;このツールは、x, y, z座標列を指定してGeoTIFFを作成します。&lt;/p&gt;
-              &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;入力方法&lt;/span&gt;&lt;/p&gt;
-              &lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;単一ファイル入力&lt;/li&gt;
-              &lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;フォルダ入力&lt;/li&gt;&lt;/ul&gt;
-              &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;主な機能&lt;/span&gt;&lt;/p&gt;
-              &lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;txt/csv を GeoTIFFに変換&lt;/li&gt;
-              &lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;フォルダ内の複数ファイルを個別に出力&lt;/li&gt;
-              &lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;複数の tif をマージして出力&lt;/li&gt;&lt;/ul&gt;
-              &lt;p style=" margin-top:12px; margin-bottom:6px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;入力点の座標は、出力ラスタセルの中心に対応するように処理します。&lt;/p&gt;
-              &lt;p style=" margin-top:6px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;nodata値は-9999が割り当てられます。&lt;/p&gt;
-              &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;区切り文字やスキップ行数は、入力ファイル形式に合わせて設定してください。&lt;/p&gt;
-              &lt;p style=" margin-top:24px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;GitHub: &lt;a href="https://github.com/Mizuki011124/txt_2_tif_dem_builder"&gt;https://github.com/Mizuki011124/txt_2_tif_dem_builder&lt;/a&gt;&lt;/p&gt;
-              &lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="openExternalLinks">
-            <bool>true</bool>
-          </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
+         </property>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS UI Gothic'; font-size:9.216pt; font-weight:400; font-style:normal;"&gt;
+&lt;h3 style=" margin-top:14px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-size:large; font-weight:600;"&gt;Create GeoTIFF from txt/csv&lt;/span&gt;&lt;/h3&gt;
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This tool creates a GeoTIFF by using the specified x, y, and z coordinate columns.&lt;/p&gt;
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Input methods&lt;/span&gt;&lt;/p&gt;
+&lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Single file input&lt;/li&gt;
+&lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Folder input&lt;/li&gt;&lt;/ul&gt;
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Main features&lt;/span&gt;&lt;/p&gt;
+&lt;ul style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Convert txt/csv to GeoTIFF&lt;/li&gt;
+&lt;li style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Output multiple files in a folder individually&lt;/li&gt;
+&lt;li style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Merge multiple TIFF files into one output&lt;/li&gt;&lt;/ul&gt;
+&lt;p style=" margin-top:12px; margin-bottom:6px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Input point coordinates are interpreted as the centers of output raster cells.&lt;/p&gt;
+&lt;p style=" margin-top:6px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;The NoData value is set to -9999.&lt;/p&gt;
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Set the delimiter and the number of skipped rows according to the input file format.&lt;/p&gt;
+&lt;p style=" margin-top:24px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;GitHub: &lt;a href="https://github.com/Mizuki011124/txt_2_tif_dem_builder"&gt;https://github.com/Mizuki011124/txt_2_tif_dem_builder&lt;/a&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
         </widget>
        </item>
       </layout>
@@ -469,14 +443,14 @@
      <item>
       <widget class="QPushButton" name="pushButtonRun">
        <property name="text">
-        <string>実行</string>
+        <string>Run</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButtonCancel">
        <property name="text">
-        <string>キャンセル</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>
