@@ -50,10 +50,10 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
         self.fileWidgetSingleOutput.setFilter(self.tr('GeoTIFF (*.tif *.tiff)'))
         self.fileWidgetMergedOutput.setFilter(self.tr('GeoTIFF (*.tif *.tiff)'))
 
-        self.fileWidgetInput.setStorageMode(QgsFileWidget.GetFile)
-        self.fileWidgetSingleOutput.setStorageMode(QgsFileWidget.SaveFile)
-        self.fileWidgetOutputFolder.setStorageMode(QgsFileWidget.GetDirectory)
-        self.fileWidgetMergedOutput.setStorageMode(QgsFileWidget.SaveFile)
+        self.fileWidgetInput.setStorageMode(QgsFileWidget.StorageMode.GetFile)
+        self.fileWidgetSingleOutput.setStorageMode(QgsFileWidget.StorageMode.SaveFile)
+        self.fileWidgetOutputFolder.setStorageMode(QgsFileWidget.StorageMode.GetDirectory)
+        self.fileWidgetMergedOutput.setStorageMode(QgsFileWidget.StorageMode.SaveFile)
 
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(100)
@@ -83,7 +83,7 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
         self._cancel_requested = False
 
         self.radioInputFile.setChecked(True)
-        self.fileWidgetInput.setStorageMode(QgsFileWidget.GetFile)
+        self.fileWidgetInput.setStorageMode(QgsFileWidget.StorageMode.GetFile)
         self.fileWidgetInput.setFilePath('')
 
         self.spinXcol.setValue(1)
@@ -117,10 +117,10 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
         is_file = self.radioInputFile.isChecked()
 
         if is_file:
-            self.fileWidgetInput.setStorageMode(QgsFileWidget.GetFile)
+            self.fileWidgetInput.setStorageMode(QgsFileWidget.StorageMode.GetFile)
             self.fileWidgetInput.setFilter(self.tr('Text/CSV (*.txt *.csv);;All files (*.*)'))
         else:
-            self.fileWidgetInput.setStorageMode(QgsFileWidget.GetDirectory)
+            self.fileWidgetInput.setStorageMode(QgsFileWidget.StorageMode.GetDirectory)
 
         self.labelSingleOutputHeader.setEnabled(is_file)
         self.labelSingleOutput.setEnabled(is_file)
