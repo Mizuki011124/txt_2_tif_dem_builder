@@ -6,9 +6,10 @@
 [general]
 name=txt2tif DEM builder
 qgisMinimumVersion=3.0
+qgisMaximumVersion=4.99
 description=G空間情報センター等でダウンロードできるtxt/csv形式のDEMをgeotiff形式に変換するプラグインです。
   This plugin converts DEM data in txt/csv format (e.g., from the Geospatial Information Center) to GeoTIFF.
-version=1.1.0
+version=2.0.0
 author=Mizuki TAKIGAWA
 email=takigawa.mizuki011124@gmail.com
 

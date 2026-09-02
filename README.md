@@ -1,4 +1,4 @@
-# txt_2_tif_dem_builder v1.1.0
+# txt_2_tif_dem_builder v2.0.0
 
 G空間情報センター等でダウンロードできるtxt/csv形式のDEMを、GeoTIFF形式に変換するQGISプラグインです。  
 This plugin converts DEM data in txt/csv format (e.g., from the Geospatial Information Center) to GeoTIFF.

@@ -246,7 +246,7 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
                 added_paths = self._run_folder(params)
 
             if self._cancel_requested:
-                self._log(self.tr('Processing was canceled.'), Qgis.Warning)
+                self._log(self.tr('Processing was canceled.'), Qgis.MessageLevel.Warning)
                 QMessageBox.information(self, self.tr('Canceled'), self.tr('Processing was canceled.'))
                 return
 
@@ -255,12 +255,12 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
                     self._add_raster_to_project(tif_path)
 
             self.progressBar.setValue(100)
-            self._log(self.tr('Processing completed.'), Qgis.Success)
+            self._log(self.tr('Processing completed.'), Qgis.MessageLevel.Success)
             QMessageBox.information(self, self.tr('Completed'), self.tr('Processing completed.'))
             self.accept()
 
         except Exception as e:
-            self._log(traceback.format_exc(), Qgis.Critical)
+            self._log(traceback.format_exc(), Qgis.MessageLevel.Critical)
             QMessageBox.critical(self, self.tr('Error'), str(e))
         finally:
             self._set_running_state(False)
@@ -336,15 +336,15 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
                             self.tr('{filename} is an empty file.\n\nDo you want to skip this file and continue?').format(
                                 filename=os.path.basename(txt_path)
                             ),
-                            QMessageBox.Yes | QMessageBox.No,
-                            QMessageBox.No,
+                            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                            QMessageBox.StandardButton.No,
                         )
-                        if reply == QMessageBox.Yes:
+                        if reply == QMessageBox.StandardButton.Yes:
                             self._log(
                                 self.tr('Skipped empty file: {filename}').format(
                                     filename=os.path.basename(txt_path)
                                 ),
-                                Qgis.Warning,
+                                Qgis.MessageLevel.Warning,
                             )
                             current_step += 1
                             self._set_progress_by_steps(current_step, total_steps)
@@ -457,7 +457,7 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
             band.SetNoDataValue(nodata)
             band.FlushCache()
             ds = None
-            self._log(self.tr('Created: {path}').format(path=out_tif), Qgis.Info)
+            self._log(self.tr('Created: {path}').format(path=out_tif), Qgis.MessageLevel.Info)
             QApplication.processEvents()
 
         except Exception:
@@ -483,7 +483,7 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
             os.remove(vrt_path)
         except OSError:
             pass
-        self._log(self.tr('Merge completed: {path}').format(path=out_tif_path), Qgis.Info)
+        self._log(self.tr('Merge completed: {path}').format(path=out_tif_path), Qgis.MessageLevel.Info)
         QApplication.processEvents()
 
     # ------------------------------
@@ -503,9 +503,9 @@ class TXT2TIFDialog(QtWidgets.QDialog, FORM_CLASS):
         raster = QgsRasterLayer(tif_path, layer_name)
         if raster.isValid():
             QgsProject.instance().addMapLayer(raster)
-            self._log(self.tr('Added to QGIS layer tree: {path}').format(path=tif_path), Qgis.Info)
+            self._log(self.tr('Added to QGIS layer tree: {path}').format(path=tif_path), Qgis.MessageLevel.Info)
         else:
-            self._log(self.tr('Failed to add layer: {path}').format(path=tif_path), Qgis.Warning)
+            self._log(self.tr('Failed to add layer: {path}').format(path=tif_path), Qgis.MessageLevel.Warning)
 
-    def _log(self, message, level=Qgis.Info):
+    def _log(self, message, level=Qgis.MessageLevel.Info):
         QgsMessageLog.logMessage(message, 'txt2tif DEM builder', level)

@@ -6,7 +6,6 @@ from qgis.PyQt.QtCore import QCoreApplication, QSettings, QTranslator
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 
-from .resources import *
 from .txt_2_tif_dem_builder_dialog import TXT2TIFDialog
 
 import os.path
@@ -52,7 +51,7 @@ class TXT2TIF:
         return action
 
     def initGui(self):
-        icon_path = ':/plugins/txt_2_tif_dem_builder/icon.png'
+        icon_path = os.path.join(self.plugin_dir, 'icon.png')
         self.add_action(
             icon_path,
             text=self.tr(u'txt2tif DEM builder'),
@@ -71,4 +70,4 @@ class TXT2TIF:
         dlg.show()
         dlg.raise_()
         dlg.activateWindow()
-        dlg.exec_()
+        dlg.exec()
